@@ -1,6 +1,6 @@
 require("dotenv").config();
 
-var keys = require(".keys.js");
+var keys = require("./keys.js");
 var axios = require("axios");
 var moment = require("moment");
 var fs = require("fs");
@@ -63,5 +63,51 @@ function caseSwitches(commmand, userInput) {
                     }
                 }
         }
+
+        case "spotify-this-song":
+
+          function songName () { 
+            // this is the default song if no user input is added after user command 
+            if (userInput === undefined) {
+              userInput = "The Sign"; //default Song
+          }
+
+          // spotify search
+            spotify.search({ 
+              type: 'track', 
+              query: userInput, 
+              limit: 3,
+            }, function(err, data) {
+              if (err) {
+                return console.log('Error occurred: ' + err);
+              }
+              data.tracks.items.map(item => {
+                console.log(`\n`);
+                console.log(`************ Song Information ************\n`);
+                console.log(`Song name: ${item.name} \nArtist name: ${item.album.artists[0].name} \nAlbum name: ${item.album.name} \nSong preview URL: ${item.preview_url}`);
+              })
+            });
+          }  
+          songName();
+
+        break;
+
+        default: 
+          console.log(`Sorry, I do not understand this command. Please give me one of the following commands \n"movie-this" followed by your movie of choice \n"concert-this" followed by your band or artist of choice \n"spotify-this song" followed by song of choice \n"do-what-it-says"`);
     }
 }
+
+if (command !== "do-what-it-says") {
+        caseSwitches(command, userInput)
+      } else {
+        fs.readFile('random.txt', 'utf8', function(err, data) {
+          if (err) {
+            return console.log(err);
+          }
+          var input = data.split(",")
+          var doItCommand = input[0]
+          var doItInput = input[1]
+          caseSwitches(doItCommand, doItInput);
+          console.log(data);
+        })
+    }
