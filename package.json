@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/matt-wilson78/liri-node-app#readme",
   "dependencies": {
-    "axios": "^0.19.1",
+    "axios": "^0.21.1",
     "bandsintown-rest": "^2.0.0",
     "dotenv": "^8.2.0",
     "moment": "^2.24.0",
